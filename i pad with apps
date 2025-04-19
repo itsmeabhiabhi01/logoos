@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>iPad Interface</title>
+  <style>
+    :root {
+      --sizeVar: 100vmin;
+    }
+    body {
+      margin: 0;
+      background-color: #f0f0f0;
+    }
+    .ipadBox {
+      position: absolute;
+      width: var(--sizeVar);
+      height: calc(var(--sizeVar) * 0.77);
+      background-color: #121212;
+      border-radius: calc(var(--sizeVar) / 24);
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 0 calc(var(--sizeVar) / 200) #9d9ea0;
+    }
+    .ipadBox::before,
+    .ipadBox::after {
+      content: "";
+      position: absolute;
+      width: 4%;
+      height: 1%;
+      left: 6%;
+      top: -1.2%;
+      border-radius: calc(var(--sizeVar) / 24) calc(var(--sizeVar) / 24) 0 0;
+      background-color: #8a8a8a;
+      z-index: -1;
+    }
+    .ipadBox::after {
+      left: 11%;
+    }
+    .powerButton {
+      position: absolute;
+      width: fit-content;
+      height: 7%;
+      left: -1.5vmin;
+      top: 5%;
+      padding: 0;
+      padding-right: 0.5vmin;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      color: transparent;
+      border-radius: calc(var(--sizeVar) / 24) 0 0 calc(var(--sizeVar) / 24);
+      background-color: #8a8a8a;
+      z-index: -1;
+    }
+    .powerButton::after {
+      content: "";
+      position: absolute;
+      width: 200%;
+      height: 150%;
+      top: -25%;
+      left: -100%;
+    }
+    .ipadScreen {
+      position: absolute;
+      width: 95%;
+      height: 93.6%;
+      top: 3.2%;
+      left: 2.5%;
+      border-radius: calc(var(--sizeVar) / 40);
+      background-color: #aaaaaa;
+      opacity: 0;
+      overflow: hidden;
+      transition: opacity 300ms linear;
+    }
+    .wallpaper,
+    .lockContent {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      background-image: url("https://assets.codepen.io/2722301/bg.jpg");
+      background-size: cover;
+      background-position: center;
+      background-color: black;
+    }
+    .lockScreen {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      cursor: pointer;
+      overflow: hidden;
+      backdrop-filter: blur(0);
+      transition: top 800ms ease-in 0s, backdrop-filter 200ms ease-in 0s;
+    }
+    .lockContent {
+      background: none;
+    }
+    .statusBar {
+      width: 100%;
+      height: 3%;
+      background-image: url("https://assets.codepen.io/2722301/status.png");
+      background-position: right;
+      background-size: 11.6%;
+      background-repeat: no-repeat;
+    }
+    .lockIcon {
+      width: 100%;
+      height: 5%;
+      background-image: url("https://assets.codepen.io/2722301/lock.png");
+      background-position: center;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+    .lockTime {
+      width: 100%;
+      font-family: "Work Sans", sans-serif;
+      font-weight: 200;
+      font-size: calc(var(--sizeVar) / 46);
+      color: white;
+      text-align: center;
+      line-height: 250%;
+      margin-top: 3%;
+    }
+    .lockTime::first-line {
+      font-size: calc(var(--sizeVar) / 10.5);
+    }
+    .interactionBar {
+      --colorMe: white;
+      position: absolute;
+      bottom: -8%;
+      height: 3%;
+      width: 100%;
+      transition: bottom 800ms ease-in 0s;
+    }
+    .lockScreen .interactionBar {
+      bottom:sco: 0;
+    }
+    #inAppBar {
+      cursor: pointer;
+    }
+    .interactionBar::after {
+      content: "";
+      position: absolute;
+      width: 28%;
+      height: 30%;
+      top: 0;
+      margin-left: 36%;
+      border-radius: 100px;
+      background-color: var(--colorMe);
+    }
+    .lockScreen .interactionBar::after {
+      animation: interactionAnim 8000ms ease-in infinite;
+    }
+    .lockScreen .interactionBar::before {
+      position: absolute;
+      width: 100%;
+      top: -140%;
+      text-align: center;
+      color: white;
+      content: "swipe up to open";
+      font-size: calc(var(--sizeVar) / 46);
+      font-family: "Work Sans", sans-serif;
+      font-weight: 200;
+      animation: interTextAnim 8000ms ease-in infinite;
+    }
+    .appGrid {
+      position: absolute;
+      top: 5%;
+      left: 5%;
+      width: 90%;
+      height: 80%;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: calc(var(--sizeVar) / 30);
+      opacity: 0;
+      transition: opacity 400ms ease-in-out;
+    }
+    .appGrid.show {
+      opacity: 1;
+    }
+    .logo {
+      text-align: center;
+      width: calc(var(--sizeVar) / 10);
+      cursor: pointer;
+    }
+    .logo img {
+      width: 100%;
+      height: auto;
+      border-radius: calc(var(--sizeVar) / 80);
+      transition: transform 0.2s;
+    }
+    .logo img:hover {
+      transform: scale(1.1);
+    }
+    .logo p {
+      margin: 5px 0 0;
+      font-family: "Work Sans", sans-serif;
+      font-size: calc(var(--sizeVar) / 60);
+      color: white;
+      text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+    }
+    @keyframes interactionAnim {
+      0% { top: 0; }
+      70% { top: 0; }
+      80% { top: -50%; }
+      92% { top: 0; }
+      100% { top: 0; }
+    }
+    @keyframes interTextAnim {
+      0% { top: -100%; opacity: 0; }
+      70% { top: -100%; opacity: 0; }
+      80% { top: -200%; opacity: 1; }
+      90% { top: -200%; opacity: 1; }
+      100% { top: -200%; opacity: 0; }
+    }
+  </style>
+</head>
+<body onload="checkTime();">
+  <div class="ipadBox">
+    <button class="powerButton" onclick="powerMe();">I</button>
+    <div class="ipadScreen">
+      <div class="wallpaper">
+        <div class="statusBar"></div>
+        <div class="appGrid" id="appGrid">
+          <div class="logo" onclick="window.open('https://www.youtube.com', '_blank')">
+            <img src="https://img.icons8.com/?size=100&id=Fzmez16u38Xl&format=png&color=000000" alt="YouTube">
+            <p>YouTube</p>
+          </div>
+          <div class="logo" onclick="window.open('https://www.instagram.com', '_blank')">
+            <img src="https://img.icons8.com/?size=100&id=BrU2BBoRXiWq&format=png&color=000000" alt="Instagram">
+            <p>Instagram</p>
+          </div>
+          <div class="logo" onclick="window.open('https://x.com', '_blank')">
+            <img src="https://img.icons8.com/?size=100&id=phOKFKYpe00C&format=png&color=000000" alt="X">
+            <p>X</p>
+          </div>
+          <div class="logo" onclick="window.open('https://www.facebook.com', '_blank')">
+            <img src="https://img.icons8.com/?size=100&id=118497&format=png&color=000000" alt="Facebook">
+            <p>Facebook</p>
+          </div>
+          <div class="logo" onclick="window.open('https://www.tiktok.com', '_blank')">
+            <img src="https://img.icons8.com/?size=100&id=118638&format=png&color=000000" alt="TikTok">
+            <p>TikTok</p>
+          </div>
+          <div class="logo" onclick="window.open('https://www.pinterest.com', '_blank')">
+            <img src="https://img.icons8.com/?size=100&id=63676&format=png&color=000000" alt="Pinterest">
+            <p>Pinterest</p>
+          </div>
+          <div class="logo" onclick="window.open('https://www.linkedin.com', '_blank')">
+            <img src="https://img.icons8.com/?size=100&id=xuvGCOXi8Wyg&format=png&color=000000" alt="LinkedIn">
+            <p>LinkedIn</p>
+          </div>
+          <div class="logo" onclick="window.open('https://www.quora.com', '_blank')">
+            <img src="https://img.icons8.com/?size=100&id=wPcChHypTdti&format=png&color=000000" alt="Quora">
+            <p>Quora</p>
+          </div>
+          <div class="logo" onclick="window.open('https://www.reddit.com', '_blank')">
+            <img src="https://img.icons8.com/?size=100&id=FLisMqR76b1i&format=png&color=000000" alt="Reddit">
+            <p>Reddit</p>
+          </div>
+          <div class="logo" onclick="window.open('https://www.google.com', '_blank')">
+            <img src="https://img.icons8.com/?size=100&id=17949&format=png&color=000000" alt="Google">
+            <p>Google</p>
+          </div>
+          <div class="logo" onclick="window.open('https://www.google.com/chrome', '_blank')">
+            <img src="https://img.icons8.com/?size=100&id=63785&format=png&color=000000" alt="Chrome">
+            <p>Chrome</p>
+          </div>
+          <div class="logo" onclick="window.open('https://maps.google.com', '_blank')">
+            <img src="https://img.icons8.com/?size=100&id=DcygmpZqBEd9&format=png&color=000000" alt="Google Maps">
+            <p>Google Maps</p>
+          </div>
+          <div class="logo" onclick="window.open('https://docs.google.com', '_blank')">
+            <img src="https://img.icons8.com/?size=100&id=30464&format=png&color=000000" alt="Google Docs">
+            <p>Google Docs</p>
+          </div>
+          <div class="logo" onclick="window.open('https://mail.google.com', '_blank')">
+            <img src="https://img.icons8.com/?size=100&id=qyRpAggnV0zH&format=png&color=000000" alt="Gmail">
+            <p>Gmail</p>
+          </div>
+          <div class="logo" onclick="window.open('https://pay.google.com', '_blank')">
+            <img src="https://img.icons8.com/?size=100&id=d3FdjviJ7gNe&format=png&color=000000" alt="Google Pay">
+            <p>Google Pay</p>
+          </div>
+          <div class="logo" onclick="window.open('https://www.amazon.com', '_blank')">
+            <img src="https://img.icons8.com/?size=100&id=21295&format=png&color=000000" alt="Amazon">
+            <p>Amazon</p>
+          </div>
+          <div class="logo" onclick="window.open('https://www.amazon.com/amazonprime', '_blank')">
+            <img src="https://img.icons8.com/?size=100&id=TUt56jArwSOO&format=png&color=000000" alt="Amazon Prime">
+            <p>Amazon Prime</p>
+          </div>
+          <div class="logo" onclick="window.open('https://music.amazon.com', '_blank')">
+            <img src="https://img.icons8.com/?size=100&id=3TE5FcLikFfj&format=png&color=000000" alt="Amazon Music">
+            <p>Amazon Music</p>
+          </div>
+          <div class="logo" onclick="window.open('https://www.openai.com/chatgpt', '_blank')">
+            <img src="https://img.icons8.com/?size=100&id=FBO05Dys9QCg&format=png&color=000000" alt="ChatGPT">
+            <p>ChatGPT</p>
+          </div>
+          <div class="logo" onclick="window.open('https://x.ai', '_blank')">
+            <img src="https://img.icons8.com/?size=100&id=eoxMN35Z6JKg&format=png&color=000000" alt="AI">
+            <p>AI</p>
+          </div>
+          <div class="logo" onclick="window.open('https://www.miniclip.com', '_blank')">
+            <img src="https://img.icons8.com/?size=100&id=GdTfmvALOWwB&format=png&color=000000" alt="Games">
+            <p>Games</p>
+          </div>
+          <div class="logo" onclick="window.open('https://www.spotify.com', '_blank')">
+            <img src="https://img.icons8.com/?size=100&id=G9XXzb9XaEKX&format=png&color=000000" alt="Spotify">
+            <p>Spotify</p>
+          </div>
+          <div class="logo" onclick="window.open('https://www.netflix.com', '_blank')">
+            <img src="https://img.icons8.com/?size=100&id=ortlsYTZxMvT&format=png&color=000000" alt="Netflix">
+            <p>Netflix</p>
+          </div>
+          <div class="logo" onclick="window.open('https://www.flipkart.com', '_blank')">
+            <img src="https://img.icons8.com/?size=100&id=UU2im0hihoyi&format=png&color=000000" alt="Flipkart">
+            <p>Flipkart</p>
+          </div>
+          <div class="logo" onclick="window.open('https://www.swiggy.com', '_blank')">
+            <img src="https://img.icons8.com/?size=100&id=M8M9YjBrtUkd&format=png&color=000000" alt="Swiggy">
+            <p>Swiggy</p>
+          </div>
+          <div class="logo" onclick="window.open('https://www.zomato.com', '_blank')">
+            <img src="https://img.icons8.com/?size=100&id=8VXmexoroqDq&format=png&color=000000" alt="Zomato">
+            <p>Zomato</p>
+          </div>
+          <div class="logo" onclick="window.open('https://www.paytm.com', '_blank')">
+            <img src="https://img.icons8.com/?size=100&id=Aub11Fs5DJVg&format=png&color=000000" alt="Paytm">
+            <p>Paytm</p>
+          </div>
+          <div class="logo" onclick="window.open('https://www.phonepe.com', '_blank')">
+            <img src="https://img.icons8.com/?size=100&id=OYtBxIlJwMGA&format=png&color=000000" alt="PhonePe">
+            <p>PhonePe</p>
+          </div>
+          <div class="logo" onclick="window.open('https://www.notion.so', '_blank')">
+            <img src="https://img.icons8.com/?size=100&id=uVERmCBZZACL&format=png&color=000000" alt="Notion">
+            <p>Notion</p>
+          </div>
+          <div class="logo" onclick="window.open('https://www.canva.com', '_blank')">
+            <img src="https://img.icons8.com/?size=100&id=iWw83PVcBpLw&format=png&color=000000" alt="Canva">
+            <p>Canva</p>
+          </div>
+          <div class="logo" onclick="window.open('https://www.wikipedia.org', '_blank')">
+            <img src="https://img.icons8.com/?size=100&id=12470&format=png&color=000000" alt="Wikipedia">
+            <p>Wikipedia</p>
+          </div>
+          <div class="logo" onclick="window.open('https://www.whatsapp.com', '_blank')">
+            <img src="https://img.icons8.com/?size=100&id=16713&format=png&color=000000" alt="WhatsApp">
+            <p>WhatsApp</p>
+          </div>
+          <div class="logo" onclick="window.open('https://www.apple.com/mail', '_blank')">
+            <img src="https://img.icons8.com/?size=100&id=cHNRcWMI2bLJ&format=png&color=000000" alt="Mail">
+            <p>Mail</p>
+          </div>
+        </div>
+      </div>
+      <div class="lockScreen" onclick="lockClick();">
+        <div class="lockContent">
+          <div class="statusBar"></div>
+          <div class="lockIcon"></div>
+          <div class="lockTime">9:41<br />Saturday, August 17</div>
+        </div>
+        <div class="interactionBar"></div>
+      </div>
+      <div class="interactionBar" id="inAppBar" onclick="goHome();"></div>
+    </div>
+  </div>
+  <script>
+    let powerVar = 0;
+
+    function powerMe() {
+      document.getElementById("inAppBar").style.bottom = "-8%";
+      document.getElementById("inAppBar").style.pointerEvents = "none";
+      document.getElementsByClassName("wallpaper")[0].style.backgroundImage =
+        "url('https://assets.codepen.io/2722301/bg.jpg')";
+      if (powerVar == 1) {
+        document.getElementsByClassName("ipadScreen")[0].style.opacity = 1;
+        document.getElementsByClassName("ipadScreen")[0].style.pointerEvents = "all";
+        powerVar = 0;
+        document.getElementsByClassName("lockScreen")[0].style.transition =
+          "top 800ms ease-in 0s, backdrop-filter 200ms ease-in 0s";
+        document.getElementById("appGrid").style.transition = "opacity 400ms ease-in-out";
+      } else {
+        document.getElementsByClassName("ipadScreen")[0].style.opacity = 0;
+        document.getElementsByClassName("ipadScreen")[0].style.pointerEvents = "none";
+        powerVar = 1;
+        setTimeout(function () {
+          document.getElementsByClassName("lockScreen")[0].style.transition = "none";
+          document.getElementById("appGrid").style.transition = "none";
+          document.getElementsByClassName("lockScreen")[0].style.backdropFilter = "blur(0)";
+          document.getElementsByClassName("lockScreen")[0].style.top = "0";
+          document.getElementById("appGrid").classList.remove("show");
+        }, 300);
+      }
+    }
+
+    function lockClick() {
+      document.getElementsByClassName("lockScreen")[0].style.backdropFilter = "blur(2vh) brightness(1.2)";
+      document.getElementsByClassName("lockScreen")[0].style.top = "-110%";
+      document.getElementById("appGrid").classList.add("show");
+    }
+
+    function checkTime() {
+      var day = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      var month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      d = new Date();
+      if (d.getMinutes() < 10) {
+        minTime = "0" + d.getMinutes();
+      } else {
+        minTime = d.getMinutes();
+      }
+      document.getElementsByClassName("lockTime")[0].innerHTML =
+        d.getHours() + ":" + minTime + "<br/>" + day[d.getDay()] + ", " + month[d.getMonth()] + " " + d.getDate();
+      setTimeout(function () {
+        checkTime();
+      }, 500);
+    }
+
+    function goHome() {
+      document.getElementById("inAppBar").style.bottom = "-8%";
+      document.getElementById("inAppBar").style.pointerEvents = "none";
+      document.getElementsByClassName("wallpaper")[0].style.backgroundImage =
+        "url('https://assets.codepen.io/2722301/bg.jpg')";
+      document.getElementById("appGrid").classList.add("show");
+    }
+
+    setTimeout(function () {
+      document.getElementsByClassName("ipadScreen")[0].style.opacity = 1;
+    }, 1000);
+  </script>
+</body>
+</html>
