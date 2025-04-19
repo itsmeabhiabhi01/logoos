@@ -176,9 +176,9 @@
         <div class="logo">
             <img src="https://img.icons8.com/?size=100&id=16713&format=png&color=000000" alt="WhatsApp">
             <p>WhatsApp</p>
-        </div>
+        </div> 
         <div class="logo">
-            <img src="https://img.icons8.com/?size=100&id=cHNRcWMI2bLJ&format=png&color=000000" alt="Mail">
+            <img src="https://img.icons8.com/?size=100&id=cHNRcWMI2bLJ&format=png&color=000000" alt="Message">
             <p>Mail</p>
         </div>
     </div>
