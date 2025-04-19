@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Filtered App Logos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 20px;
+      justify-content: center;
+    }
+    .app {
+      text-align: center;
+      width: 80px;
+    }
+    .app img {
+      width: 60px;
+      height: 60px;
+      border-radius: 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+    .app span {
+      font-size: 12px;
+      display: block;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg"/><span>YouTube</span></div>
+  <div class="app"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png"/><span>Instagram</span></div>
+  <div class="app"><img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg"/><span>Facebook</span></div>
+  <div class="app"><img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg"/><span>ChatGPT</span></div>
+  <div class="app"><img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png"/><span>LinkedIn</span></div>
+  <div class="app"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Slack_icon_2019.svg"/><span>Slack</span></div>
+  <div class="app"><img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png"/><span>Prime Video</span></div>
+  <div class="app"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg"/><span>Disney+</span></div>
+  <div class="app"><img src="https://upload.wikimedia.org/wikipedia/commons/1/17/HBO_Max_Logo.svg"/><span>HBO Max</span></div>
+  <div class="app"><img src="https://upload.wikimedia.org/wikipedia/commons/2/28/Apple_TV_Plus_Logo.svg"/><span>Apple TV+</span></div>
+
+</body>
+</html>
